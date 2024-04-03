@@ -13,7 +13,7 @@ import init from './init.js';
 // eslint-disable-next-line complexity
 export default async(args: string[], cwd: string,): Promise<number> => {
   const logger = new Logger();
-  const  config = new  Config(cwd, args,);
+  const config = new Config(cwd, args,);
   switch (args[FIRST_ARGUMENT]) {
     case 'check':
       return check(

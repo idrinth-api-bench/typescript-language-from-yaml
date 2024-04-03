@@ -6,21 +6,30 @@ import {
   parse,
 } from 'yaml';
 import {
+  CONFIG_FILE,
   EMPTY,
-  SECOND_ARGUMENT
-} from "./constants.js";
+  SECOND_ARGUMENT,
+} from './constants.js';
 
 export default class Config {
   public readonly originDirectory: string;
+
   public readonly targetDirectory: string;
+
   public readonly isVerbatimModuleSyntax: boolean;
+
   public readonly hasNoTranslationsFile: boolean;
+
   public readonly isFailOnWarning: boolean;
+
   public readonly isStrictTypes: boolean;
+
   public readonly isSplit: boolean;
+
   public readonly folders: string[];
-  constructor(cwd: string, args: string[] = []) {
-    const file = `${ cwd }/.idrinth-typescript-from-yaml.yml`;
+
+  constructor(cwd: string, args: string[] = [],) {
+    const file = `${ cwd }/${ CONFIG_FILE }`;
     this.hasNoTranslationsFile = false;
     this.isSplit = false;
     this.originDirectory = 'language';
@@ -29,7 +38,7 @@ export default class Config {
     this.isStrictTypes = false;
     this.isVerbatimModuleSyntax = false;
     if (existsSync(file,)) {
-      const data = parse(readFileSync(file, 'utf8'));
+      const data = parse(readFileSync(file, 'utf8',),);
       if (typeof data.hasNoTranslationsFile === 'boolean') {
         this.hasNoTranslationsFile = data.hasNoTranslationsFile;
       }
@@ -68,9 +77,9 @@ export default class Config {
       this.isVerbatimModuleSyntax = true;
     }
     this.folders = args
-      .splice(SECOND_ARGUMENT,)
-      .filter((arg,) => !  arg.startsWith('--'),)
-      .map((rel,) => `${ cwd }/${ rel }`);
+      .slice(SECOND_ARGUMENT,)
+      .filter((arg,) => ! arg.startsWith('--',),)
+      .map((rel,) => `${ cwd }/${ rel }`,);
     if (this.folders.length === EMPTY) {
       this.folders.push(cwd,);
     }

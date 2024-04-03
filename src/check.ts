@@ -11,15 +11,15 @@ import {
 } from './constants.js';
 import Logger from './logger.js';
 import loadKeys from './loadKeys.js';
-import Config from "./config.js";
+import Config from './config.js';
 export default (
   logger: Logger,
   config: Config,
 ) => {
   let errors = 0;
   let warnings = 0;
-  for  (const  folder of config.folders) {
-    const localConfig = new Config(`${ folder }`);
+  for (const folder of config.folders) {
+    const localConfig = new Config(`${ folder }`,);
     if (! existsSync(`${ folder }/${ localConfig.originDirectory }`,)) {
       logger.error(`folder ${ folder }/${ localConfig.originDirectory } doesn't exist`,);
       errors ++;

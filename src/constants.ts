@@ -5,3 +5,4 @@ export const FIRST_ARGUMENT = 2;
 export const SECOND_ARGUMENT = 3;
 export const EMPTY = 0;
 export const DEFAULT_INDENTATION = 2;
+export const CONFIG_FILE = '.idrinth-typescript-language-from-yaml.yml';

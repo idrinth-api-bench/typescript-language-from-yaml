@@ -1,7 +1,14 @@
-import Logger from "./logger.js";
-import Config from "./config.js";
-import {writeFileSync} from "fs";
-import {stringify} from "yaml";
+import Logger from './logger.js';
+import Config from './config.js';
+import {
+  writeFileSync,
+} from 'fs';
+import {
+  stringify,
+} from 'yaml';
+import {
+  CONFIG_FILE,
+} from './constants.js';
 
 export default (
   logger: Logger,
@@ -17,12 +24,12 @@ export default (
     isFailOnWarning: config.isFailOnWarning,
   };
   for (const folder of config.folders) {
-    const target = `${folder}/.idrinth-typescript-language-from-yaml.yml`;
+    const target = `${ folder }/${ CONFIG_FILE }`;
     writeFileSync(
       target,
-      stringify(toWrite),
+      stringify(toWrite,),
       'utf8',
     );
-    logger.info(`Wrote  ${ target }`);
+    logger.info(`Wrote  ${ target }`,);
   }
 };

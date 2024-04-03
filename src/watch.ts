@@ -8,7 +8,7 @@ import {
 import delay from './delay.js';
 import generate from './generate.js';
 import Logger from './logger.js';
-import Config from "./config.js";
+import Config from './config.js';
 
 // eslint-disable-next-line complexity
 export default async(
@@ -20,7 +20,7 @@ export default async(
   while (true) {
     const now = Date.now();
     for (const folder of config.folders) {
-      const localConfig = new Config(folder);
+      const localConfig = new Config(folder,);
       let modified = false;
       for (const file of readdirSync(
         `${ folder }/${ localConfig.originDirectory }`,
