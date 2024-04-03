@@ -18,10 +18,12 @@ import loadKeys from './loadKeys.js';
 import {unlinkSync} from "node:fs";
 
 export default (logger: Logger, cwd: string, shouldSplit = false, isVerbatimModuleSyntax = false) => {
-  for (const file in readdirSync(`${ cwd }/${ TARGET_DIR }`,)) {
-    unlinkSync(`${cwd}/${ TARGET_DIR }/${ file }`,);
+  if (existsSync(`${cwd}/${TARGET_DIR}`,)) {
+    for (const file in readdirSync(`${cwd}/${TARGET_DIR}`, 'utf8',)) {
+      unlinkSync(`${cwd}/${TARGET_DIR}/${file}`,);
+    }
   }
-  const yamlFiles = readdirSync(`${ cwd }/${ ORIGIN_DIRECTORY }`,)
+  const yamlFiles = readdirSync(`${ cwd }/${ ORIGIN_DIRECTORY }`, 'utf8',)
     .filter((file,) => file.endsWith('.yml',),);
 
   const files = [];
@@ -42,6 +44,7 @@ export default (logger: Logger, cwd: string, shouldSplit = false, isVerbatimModu
         writeFileSync(
           `${ TARGET_DIR }/${ lang }-${ key }.ts`,
           `/* eslint max-len:0 */\nconst lang = ${ toTypescriptObject(data[key]) };\n\nexport default lang;\n`,
+          'utf8',
         );
         files.push(`${ lang }-${ key }`,);
       }
@@ -49,6 +52,7 @@ export default (logger: Logger, cwd: string, shouldSplit = false, isVerbatimModu
       writeFileSync(
         `${ TARGET_DIR }/${ lang }.ts`,
         `/* eslint max-len:0 */\nconst lang = ${ toTypescriptObject(data) };\n\nexport default lang;\n`,
+        'utf8',
       );
       files.push(`${ lang }`,);
     }
@@ -59,6 +63,7 @@ export default (logger: Logger, cwd: string, shouldSplit = false, isVerbatimModu
         isVerbatimModuleSyntax
           ? `/* eslint max-len:0 */\ntype lk = '${ keys.join('\'|\'',) }';\nexport type languageKey = lk;\n`
           : `/* eslint max-len:0 */\ntype languageKey = '${ keys.join('\'|\'',) }';\nexport default languageKey;\n`,
+        'utf8',
       );
     }
   },);
@@ -69,10 +74,12 @@ export default (logger: Logger, cwd: string, shouldSplit = false, isVerbatimModu
   writeFileSync(
     TARGET_DIR + '/languages.ts',
     `/* eslint max-len:0 */\nconst languages = ${ languages };\nexport default languages;\n`,
+    'utf8',
   );
   writeFileSync(
     TARGET_DIR + '/files.ts',
     `const files = ${ toTypescriptObject(files) };\nexport default files;\n`,
+    'utf8',
   );
   let fileImporter = '';
   let fileExporter = 'const translations = {';
@@ -84,5 +91,6 @@ export default (logger: Logger, cwd: string, shouldSplit = false, isVerbatimModu
   writeFileSync(
     TARGET_DIR + '/translations.ts',
     `${ fileImporter }${ fileExporter }\nexport default translations;\n`,
+    'utf8',
   );
 };
