@@ -15,8 +15,12 @@ import {
 import Logger from './logger.js';
 import toTypescriptObject from './to-typescript-object.js';
 import loadKeys from './loadKeys.js';
+import {unlinkSync} from "node:fs";
 
 export default (logger: Logger, cwd: string, shouldSplit = false, isVerbatimModuleSyntax = false) => {
+  for (const file in readdirSync(`${ cwd }/${ TARGET_DIR }`,)) {
+    unlinkSync(`${cwd}/${ TARGET_DIR }/${ file }`,);
+  }
   const yamlFiles = readdirSync(`${ cwd }/${ ORIGIN_DIRECTORY }`,)
     .filter((file,) => file.endsWith('.yml',),);
 
