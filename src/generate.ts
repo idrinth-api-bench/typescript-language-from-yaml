@@ -13,6 +13,7 @@ import Logger from './logger.js';
 import toTypescriptObject from './to-typescript-object.js';
 import loadKeys from './loadKeys.js';
 import Config from './config.js';
+import toTypescriptObjectType from "./to-typescript-object-type.js";
 
 export default (
   logger: Logger,
@@ -42,42 +43,51 @@ export default (
 
       const content = readFileSync(yamlPath, 'utf8',);
       const data = parse(content,);
-      const typeName = localConfig.isStrictTypes ? 'langType' : 'Partial<langType>';
       if (localConfig.isSplit && typeof data[Object.keys(data,).pop()] !== 'string') {
         for (const key of Object.keys(data,)) {
+          const head = localConfig.isStrictTypes
+            ? (
+              localConfig.isVerbatimModuleSyntax
+                ? `import {\n  lang as langType,\n} from './type-${ key }.js';\nconst lang: langType = `
+                : `import langType from './type-${ key }.js';\nconst lang: langType = `
+            )
+            : 'const lang = ';
           writeFileSync(
             `${ folder }/${ localConfig.targetDirectory }/${ lang }-${ key }.ts`,
-            localConfig.isVerbatimModuleSyntax
-              ? `/* eslint max-len:0 */\nimport {\n  lang as langType,\n} from './type-${ key }.js';\nconst lang: ${ typeName } = ${ toTypescriptObject(data[key],) };\n\nexport default lang;\n`
-              : `/* eslint max-len:0 */\nimport langType from './type-${ key }.js';\nconst lang: ${ typeName } = ${ toTypescriptObject(data[key],) };\n\nexport default lang;\n`,
+            `/* eslint max-len:0 */\n${ head }${ toTypescriptObject(data[key],) };\n\nexport default lang;\n`,
             'utf8',
           );
           files.push(`${ lang }-${ key }`,);
-          if (lang === 'en') {
+          if (lang === 'en' && localConfig.isStrictTypes) {
             writeFileSync(
               `${ folder }/${ localConfig.targetDirectory }/type-${ key }.ts`,
               localConfig.isVerbatimModuleSyntax
-                ? `/* eslint max-len:0 */\ntype ln = ${ toTypescriptObject(data[key],).replace(/: '.*?',/ug, ': string,',) };\n\nexport type lang = ln;\n`
-                : `/* eslint max-len:0 */\ntype lang = ${ toTypescriptObject(data[key],).replace(/: '.*?',/ug, ': string,',) };\n\nexport default lang;\n`,
+                ? `/* eslint max-len:0 */\ntype ln = ${ toTypescriptObjectType(data[key],) };\n\nexport type lang = ln;\n`
+                : `/* eslint max-len:0 */\ntype lang = ${ toTypescriptObjectType(data[key],) };\n\nexport default lang;\n`,
               'utf8',
             );
           }
         }
       } else {
+        const head = localConfig.isStrictTypes
+          ? (
+            localConfig.isVerbatimModuleSyntax
+              ? `import {\n  lang as langType,\n} from './type.js';\nconst lang: langType = `
+              : `import langType from './type.js';\nconst lang: langType = `
+          )
+          : 'const lang = ';
         writeFileSync(
           `${ folder }/${ localConfig.targetDirectory }/${ lang }.ts`,
-          localConfig.isVerbatimModuleSyntax
-            ? `/* eslint max-len:0 */\nimport {\n  lang as langType,\n} from './type.js';\nconst lang: ${ typeName } = ${ toTypescriptObject(data,) };\n\nexport default lang;\n`
-            : `/* eslint max-len:0 */\nimport langType from './type.js';\nconst lang: ${ typeName } = ${ toTypescriptObject(data,) };\n\nexport default lang;\n`,
+          `/* eslint max-len:0 */\n${ head }${ toTypescriptObject(data,) };\n\nexport default lang;\n`,
           'utf8',
         );
         files.push(`${ lang }`,);
-        if (lang === 'en') {
+        if (lang === 'en' && localConfig.isStrictTypes) {
           writeFileSync(
             `${ folder }/${ localConfig.targetDirectory }/type.ts`,
             localConfig.isVerbatimModuleSyntax
-              ? `/* eslint max-len:0 */\ntype ln = ${ toTypescriptObject(data,).replace(/: '.*?',/ug, ': string,',) };\n\nexport type lang = ln;\n`
-              : `/* eslint max-len:0 */\ntype lang = ${ toTypescriptObject(data,).replace(/: '.*?',/ug, ': string,',) };\n\nexport default lang;\n`,
+              ? `/* eslint max-len:0 */\ntype ln = ${ toTypescriptObjectType(data,) };\n\nexport type lang = ln;\n`
+              : `/* eslint max-len:0 */\ntype lang = ${ toTypescriptObjectType(data,) };\n\nexport default lang;\n`,
             'utf8',
           );
         }
