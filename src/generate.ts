@@ -19,7 +19,7 @@ import {unlinkSync} from "node:fs";
 
 export default (logger: Logger, cwd: string, shouldSplit = false, isVerbatimModuleSyntax = false) => {
   if (existsSync(`${cwd}/${TARGET_DIR}`,)) {
-    for (const file in readdirSync(`${cwd}/${TARGET_DIR}`, 'utf8',)) {
+    for (const file of readdirSync(`${cwd}/${TARGET_DIR}`, 'utf8',)) {
       unlinkSync(`${cwd}/${TARGET_DIR}/${file}`,);
     }
   }
@@ -84,8 +84,9 @@ export default (logger: Logger, cwd: string, shouldSplit = false, isVerbatimModu
   let fileImporter = '';
   let fileExporter = 'const translations = {';
   for (const f of files) {
-    fileImporter += `import ${ f.replace('-', '_',) } from './${ f }.js';\n`;
-    fileExporter += `\n  '${ f }': ${ f.replace('-', '_',) },`;
+    const v = f.replace(/-/gu, '_',);
+    fileImporter += `import ${ v } from './${ f }.js';\n`;
+    fileExporter += `\n  '${ f }': ${ v },`;
   }
   fileExporter += '\n};';
   writeFileSync(
