@@ -17,7 +17,9 @@ export default (logger: Logger, folder: string,) => {
     logger.error(`folder ${ folder }/${ ORIGIN_DIRECTORY } doesn't exist`,);
     return false;
   }
-  logger.info(`Checking translations in folder ${ folder }/${ ORIGIN_DIRECTORY }`,);
+  logger.info(
+    `Checking translations in folder ${ folder }/${ ORIGIN_DIRECTORY }`,
+  );
   logger.info('',);
   const yamlFiles = readdirSync(`${ folder }/${ ORIGIN_DIRECTORY }`,)
     .filter((file,) => file.endsWith('.yml',),);

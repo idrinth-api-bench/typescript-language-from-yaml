@@ -11,6 +11,7 @@ import delay from './delay.js';
 import generate from './generate.js';
 import Logger from './logger.js';
 
+// eslint-disable-next-line complexity
 export default async(logger: Logger, cwd: string, folders: string[][],) => {
   if (folders.length === EMPTY) {
     folders.push([
@@ -27,12 +28,17 @@ export default async(logger: Logger, cwd: string, folders: string[][],) => {
       const [
         folder,
         split,
-        verbatim
+        verbatim,
       ] = data;
       let modified = false;
-      for (const file of readdirSync(`${ cwd }/${ folder }/${ ORIGIN_DIRECTORY }`, 'utf8',)) {
+      for (const file of readdirSync(
+        `${ cwd }/${ folder }/${ ORIGIN_DIRECTORY }`,
+        'utf8',
+      )) {
         if (file.endsWith('.yml',)) {
-          const stats = statSync(`${ cwd }/${ folder }/${ ORIGIN_DIRECTORY }/${ file }`,);
+          const stats = statSync(
+            `${ cwd }/${ folder }/${ ORIGIN_DIRECTORY }/${ file }`,
+          );
           // eslint-disable-next-line max-depth
           if (stats.mtimeMs < now && stats.mtimeMs >= last) {
             modified = true;

@@ -1,4 +1,4 @@
-export default (data:  object,): string[]=> {
+export default (data: object,): string[] => {
   const output = [];
   const loadKeys = (object: object, prefix = '',) => {
     for (const key of Object.keys(object,)) {
@@ -14,4 +14,4 @@ export default (data:  object,): string[]=> {
   };
   loadKeys(data,);
   return output;
-}
+};

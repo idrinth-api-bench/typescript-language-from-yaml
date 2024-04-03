@@ -1,6 +1,6 @@
 {
   "name": "@idrinth/typescript-language-from-yaml",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "Translates yaml files to ts for translation autocompletion, autocorrection and better developer support",
   "bin": {
     "itlfy": "bin/itlfy.js"
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https:://github.com/idrinth/typescript-language-from-yaml"
+    "url": "https://github.com/idrinth/typescript-language-from-yaml"
   },
   "keywords": [
     "transslation",
