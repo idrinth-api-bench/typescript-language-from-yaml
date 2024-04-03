@@ -2,52 +2,57 @@ import {
   EXIT_FAILURE,
   EXIT_SUCCESS,
   FIRST_ARGUMENT,
-  SECOND_ARGUMENT,
 } from './constants.js';
 import watch from './watch.js';
 import generate from './generate.js';
 import check from './check.js';
 import Logger from './logger.js';
+import Config from './config.js';
+import init from './init.js';
 
 // eslint-disable-next-line complexity
 export default async(args: string[], cwd: string,): Promise<number> => {
   const logger = new Logger();
+  const  config = new  Config(cwd, args,);
   switch (args[FIRST_ARGUMENT]) {
     case 'check':
       return check(
         logger,
-        args[SECOND_ARGUMENT] || cwd,
+        config,
       ) ? EXIT_SUCCESS : EXIT_FAILURE;
     case 'generate':
       generate(
         logger,
-        cwd,
-        args.includes('--split',),
-        args.includes('--verbatim-module-syntax',),
-        args.includes('--no-translations-file',),
-        args.includes('--strict-types',),
+        config,
+      );
+      return EXIT_SUCCESS;
+    case 'init':
+      init(
+        logger,
+        config,
       );
       return EXIT_SUCCESS;
     case 'watch':
       await watch(
         logger,
-        cwd,
-        args
-          .splice(SECOND_ARGUMENT,)
-          .map((arg,) => arg.split('=',),),
+        config,
       );
       return EXIT_SUCCESS;
     default:
       logger.info(
-        'itlfy check - checks the current working directory\'s yaml files.',
+        'itlfy check [...folder] - checks the watched folders\' yaml files.',
       );
       logger.info(
         'itlfy watch [...folder] - watches and rebuilds ' +
-        'the watched folder\'s language files on change.',
+        'the watched folders\' language files on change.',
       );
       logger.info(
-        'itlfy generate - generates typescript files from ' +
-        'the current working directory\'s yaml files.',
+        'itlfy generate [...folder] - generates typescript files from ' +
+        'the watched folders\' files.',
+      );
+      logger.info(
+        'itlfy init [...folder] - generates config files for the given' +
+        'directories.',
       );
       return EXIT_SUCCESS;
   }

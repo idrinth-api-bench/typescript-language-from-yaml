@@ -3,41 +3,32 @@ import {
   statSync,
 } from 'fs';
 import {
-  EMPTY,
-  ORIGIN_DIRECTORY,
   WAIT_DURATION,
 } from './constants.js';
 import delay from './delay.js';
 import generate from './generate.js';
 import Logger from './logger.js';
+import Config from "./config.js";
 
 // eslint-disable-next-line complexity
-export default async(logger: Logger, cwd: string, folders: string[][],) => {
-  if (folders.length === EMPTY) {
-    folders.push([
-      cwd,
-      'false',
-      'false',
-    ],);
-  }
+export default async(
+  logger: Logger,
+  config: Config,
+) => {
   let last = Date.now();
   // eslint-disable-next-line no-constant-condition
   while (true) {
     const now = Date.now();
-    for (const data of folders) {
-      const [
-        folder,
-        split,
-        verbatim,
-      ] = data;
+    for (const folder of config.folders) {
+      const localConfig = new Config(folder);
       let modified = false;
       for (const file of readdirSync(
-        `${ cwd }/${ folder }/${ ORIGIN_DIRECTORY }`,
+        `${ folder }/${ localConfig.originDirectory }`,
         'utf8',
       )) {
         if (file.endsWith('.yml',)) {
           const stats = statSync(
-            `${ cwd }/${ folder }/${ ORIGIN_DIRECTORY }/${ file }`,
+            `${ folder }/${ localConfig.originDirectory }/${ file }`,
           );
           // eslint-disable-next-line max-depth
           if (stats.mtimeMs < now && stats.mtimeMs >= last) {
@@ -49,9 +40,7 @@ export default async(logger: Logger, cwd: string, folders: string[][],) => {
       if (modified) {
         generate(
           logger,
-          `${ cwd }/${ folder }`,
-          split === 'true',
-          verbatim === 'true',
+          localConfig,
         );
       }
     }

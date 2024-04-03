@@ -24,3 +24,21 @@ Options:
 Watching will watch one or more language folders and rebuild  the typescript files whenever the yaml files change.If you don't give it a root folder, it will assume the current working directory.
 
 - `ilfy watch rootfolder1 rootfolder2`
+
+## init
+
+Generates a configuration file with the current values for  the given folder or folders.
+
+## configuration
+
+use a `.idrinth-typesscript-language-from-yaml.yml` file in the root of your project to configure the tool with defaults that can be overwritten by the command line.
+
+```yaml
+hasNoTranslationsFile: false
+isSplit: false
+originDirectory: language
+isFailOnWarning: false
+targetDirectory: src/locales
+isStrictTypes: false
+isVerbatimModuleSyntax: false
+```
