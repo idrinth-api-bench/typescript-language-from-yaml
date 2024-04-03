@@ -1,0 +1,34 @@
+{
+  "name": "@idrinth/typescript-language-from-yaml",
+  "version": "1.0.0",
+  "description": "",
+  "bin": {
+    "itlfy": "bin/itlfy.js"
+  },
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix",
+    "tsc": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run tsc",
+    "clear": "node tools/clear-js-files-from-src.js",
+    "postpublish": "npm run clear"
+  },
+  "keywords": [
+    "transslation",
+    "typescript",
+    "yaml",
+    "automation"
+  ],
+  "author": "Björn Büttner",
+  "license": "MIT",
+  "dependencies": {
+    "yaml": "^2.4.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.3",
+    "@types/node": "^20.12.3",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/eslint-plugin": "^7.5.0"
+  }
+}
