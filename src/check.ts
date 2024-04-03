@@ -61,5 +61,5 @@ export default (logger: Logger, folder: string,) => {
   }
   logger.info('',);
   logger.info(`Found ${ errors } errors and ${ warnings } warnings.`,);
-  return errors > EMPTY;
+  return errors === EMPTY;
 };
