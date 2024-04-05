@@ -9,6 +9,7 @@ import check from './check.js';
 import Logger from './logger.js';
 import Config from './config.js';
 import init from './init.js';
+import dump from './dump.js';
 
 // eslint-disable-next-line complexity
 export default async(args: string[], cwd: string,): Promise<number> => {
@@ -22,6 +23,12 @@ export default async(args: string[], cwd: string,): Promise<number> => {
       ) ? EXIT_SUCCESS : EXIT_FAILURE;
     case 'generate':
       generate(
+        logger,
+        config,
+      );
+      return EXIT_SUCCESS;
+    case 'dump':
+      dump(
         logger,
         config,
       );
