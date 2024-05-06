@@ -1,5 +1,5 @@
 {
-  "name": "@idrinth/typescript-language-from-yaml",
+  "name": "@idrinth-api-bench/typescript-language-from-yaml",
   "version": "1.3.0",
   "description": "Translates yaml files to ts for translation autocompletion, autocorrection and better developer support",
   "bin": {
@@ -7,16 +7,20 @@
   },
   "type": "module",
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . --ext ts",
     "lint-fix": "eslint . --fix",
     "tsc": "tsc -p tsconfig.json",
     "prepublishOnly": "npm run tsc",
     "clear": "node tools/clear-js-files-from-src.js",
     "postpublish": "npm run clear"
   },
+  "homepage": "https://idrinth-api-ben.ch",
+  "bugs": {
+    "url": "https://github.com/idrinth-api-bench/api-bench"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/idrinth/typescript-language-from-yaml"
+    "url": "https://github.com/idrinth-api-bench/typescript-language-from-yaml"
   },
   "keywords": [
     "transslation",

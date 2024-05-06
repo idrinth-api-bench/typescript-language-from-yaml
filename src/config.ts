@@ -28,6 +28,7 @@ export default class Config {
 
   public readonly folders: string[];
 
+  // eslint-disable-next-line complexity
   constructor(cwd: string, args: string[] = [],) {
     const file = `${ cwd }/${ CONFIG_FILE }`;
     this.hasNoTranslationsFile = false;

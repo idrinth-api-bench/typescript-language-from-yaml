@@ -1,9 +1,10 @@
 import {
   rmSync,
-  readdirSync, existsSync,
+  readdirSync,
 } from 'fs';
 import {
   fileURLToPath,
+  URL,
 } from 'url';
 const __dirname = fileURLToPath(new URL('.', import.meta.url,),);
 const clearFolder = (folder,) => {
