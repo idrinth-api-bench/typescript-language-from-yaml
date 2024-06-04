@@ -24,7 +24,7 @@ export default (
   config: Config,
 ) => {
   for (const folder of config.folders) {
-    const localConfig = new Config(`${ folder }`,);
+    const localConfig = new Config(`${ folder }`, config.overwrites,);
     if (existsSync(`${ folder }/${ localConfig.targetDirectory }`,)) {
       for (const file of readdirSync(
         `${ folder }/${ localConfig.targetDirectory }`,
@@ -34,7 +34,12 @@ export default (
       }
     }
     const yamlFiles = findYamlFiles(folder, localConfig,);
-
+    const def = localConfig.shouldInjectDefaultLanguage
+      ? parse(readFileSync(
+        `${ folder }/${ localConfig.originDirectory }/en.yml`,
+        'utf8',
+      ),)
+      : {};
     const files = [];
     const out = `${ folder }/${ localConfig.targetDirectory }`;
     if (! existsSync(out,)) {
@@ -50,7 +55,7 @@ export default (
         for (const key of Object.keys(data,)) {
           writeFileSync(
             `${ out }/${ yamlFile.language }-${ key }.ts`,
-            buildTranslationFile(localConfig, data[key],),
+            buildTranslationFile(localConfig, data[key], def[key],),
             'utf8',
           );
           files.push(`${ yamlFile.language }-${ key }`,);
@@ -67,7 +72,7 @@ export default (
       } else {
         writeFileSync(
           `${ out }/${ yamlFile.language }.ts`,
-          buildTranslationFile(localConfig, data,),
+          buildTranslationFile(localConfig, data, def,),
           'utf8',
         );
         files.push(`${ yamlFile.language }`,);
