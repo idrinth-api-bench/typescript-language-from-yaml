@@ -26,7 +26,13 @@ export default class Config {
 
   public readonly isSplit: boolean;
 
+  public readonly isSimplifiedHashMap: boolean;
+
+  public readonly shouldInjectDefaultLanguage: boolean;
+
   public readonly folders: string[];
+
+  public readonly overwrites: string[] = [];
 
   // eslint-disable-next-line complexity
   constructor(cwd: string, args: string[] = [],) {
@@ -38,6 +44,8 @@ export default class Config {
     this.targetDirectory = 'src/locales';
     this.isStrictTypes = false;
     this.isVerbatimModuleSyntax = false;
+    this.isSimplifiedHashMap = false;
+    this.shouldInjectDefaultLanguage = false;
     if (existsSync(file,)) {
       const data = parse(readFileSync(file, 'utf8',),);
       if (typeof data.hasNoTranslationsFile === 'boolean') {
@@ -61,21 +69,40 @@ export default class Config {
       if (typeof data.hasNoTranslationsFile === 'boolean') {
         this.isVerbatimModuleSyntax = data.isVerbatimModuleSyntax;
       }
+      if (typeof data.shouldInjectDefaultLanguage === 'boolean') {
+        this.shouldInjectDefaultLanguage = data.shouldInjectDefaultLanguage;
+      }
+      if (typeof data.isSimplifiedHashMap === 'boolean') {
+        this.isSimplifiedHashMap = data.isSimplifiedHashMap;
+      }
     }
     if (args.includes('--no-translation-files',)) {
       this.hasNoTranslationsFile = true;
+      this.overwrites.push('--no-translation-files',);
     }
     if (args.includes('--split',)) {
       this.isSplit = true;
+      this.overwrites.push('--split',);
     }
     if (args.includes('--fail-on-warning',)) {
       this.isFailOnWarning = true;
+      this.overwrites.push('--fail-on-warning',);
     }
     if (args.includes('--strict-types',)) {
       this.isStrictTypes = true;
+      this.overwrites.push('--strict-types',);
     }
     if (args.includes('--verbatim-module-syntax',)) {
       this.isVerbatimModuleSyntax = true;
+      this.overwrites.push('--verbatim-module-syntax',);
+    }
+    if (args.includes('--inject-default-language',)) {
+      this.shouldInjectDefaultLanguage = true;
+      this.overwrites.push('--inject-default-language',);
+    }
+    if (args.includes('--simplified-hash-map',)) {
+      this.isSimplifiedHashMap = true;
+      this.overwrites.push('--simplified-hash-map',);
     }
     this.folders = args
       .slice(SECOND_ARGUMENT,)

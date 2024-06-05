@@ -10,14 +10,16 @@ The check command will check if the yaml files in your current working directory
 
 ## generate
 
-Generate provides typescript language files according to your specification. It only works in your current  working directoy's `language` folder and will output to `ssrc/locales` by default.
+Generate provides typescript language files according to your specification. It only works in your current  working directory's `language` folder and will output to `ssrc/locales` by default.
 
 Options:
 
-- `--strict-types` apply strict types, so that typescript will error on build if the structures missmatch
+- `--strict-types` apply strict types, so that typescript will error on build if the structures mismatch
 - `--verbatim-module-syntax` will export the type as a named export instead of a default one
-- `--split` splits  the language files at the top level keys.. Thhis leads to smaller files when using dynamic imports. Usually you want `--no-translations-file` as well in case of splitting.
-- `--no-translations-file` dissables the  creation of a translation object containing all languages
+- `--simplified-hash-map` will convert the multi tiered object to a single level hash map for speed reasons.
+- `--inject-default-language` will create a file based on the default language. Only works with `--simplified-hash-map` active at the same time.
+- `--split` splits  the language files at the top level keys. This leads to smaller files when using dynamic imports. Usually you want `--no-translations-file` as well in case of splitting.
+- `--no-translations-file` disables the  creation of a translation object containing all languages
 
 ## watch
 

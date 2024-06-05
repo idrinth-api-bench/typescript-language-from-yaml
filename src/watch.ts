@@ -20,7 +20,7 @@ export default async(
   while (true) {
     const now = Date.now();
     for (const folder of config.folders) {
-      const localConfig = new Config(folder,);
+      const localConfig = new Config(folder, config.overwrites,);
       let modified = false;
       for (const file of readdirSync(
         `${ folder }/${ localConfig.originDirectory }`,
